@@ -1,0 +1,7 @@
+news_popularity_training <- read.csv("news_popularity_training.csv")
+hist(news_popularity_training$timedelta[news_popularity_training$popularity==1])
+hist(news_popularity_training$timedelta[news_popularity_training$popularity==2])
+hist(news_popularity_training$timedelta[news_popularity_training$popularity==3])
+hist(news_popularity_training$timedelta[news_popularity_training$popularity==4])
+hist(news_popularity_training$timedelta[news_popularity_training$popularity==5])
+table(news_popularity_training$popularity)
