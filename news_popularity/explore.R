@@ -5,3 +5,5 @@ hist(news_popularity_training$timedelta[news_popularity_training$popularity==3])
 hist(news_popularity_training$timedelta[news_popularity_training$popularity==4])
 hist(news_popularity_training$timedelta[news_popularity_training$popularity==5])
 table(news_popularity_training$popularity)
+
+news_popularity_training$url[news_popularity_training$popularity == 5]
