@@ -24,9 +24,9 @@ InterimEvaluation <- function(dataTrain, dataTest, saveCSV = FALSE) {
   library(randomForest)
   y <- dataTrain[, ncol(dataTrain)]
   y <- as.factor(y)
-  X <- dataTrain[, -c(1, 2, ncol(dataTrain))]
+  X <- dataTrain[, -c(1, 2, 3, ncol(dataTrain))]
   Df <- as.data.frame(cbind(y, X))
-  newX <- dataTest[, -c(1, 2)]
+  newX <- dataTest[, -c(1, 2, 3)]
   newid <- dataTest[, 1]
   # ensure reproducibility with the seed
   set.seed(0)
@@ -36,5 +36,5 @@ InterimEvaluation <- function(dataTrain, dataTest, saveCSV = FALSE) {
   # write the csv file if specified
   if (saveCSV) {write.csv(submit, file = "popularity_prediction_0rF400.csv", row.names = FALSE)}
   # output the dataframe with predictions
-  return(list(submit = submit))
+  return(submit = submit)
 }
