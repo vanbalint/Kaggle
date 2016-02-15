@@ -8,7 +8,7 @@
 #' @param dataTrain Training dataset: a data frame or a matrix where rows are observations and columns are features with the last column being response.
 #' @param dataTest Test dataset: a data frame or a matrix with new observations and the same set of features as in the training set apart from the output.
 #' @param saveCSV Set to FALSE by default; otherwise saves the predictions as csv file.
-#' @return A list with submit dataframe containing predictions for the test data.
+#' @return Dataframe called submit containing predictions for the test data.
 #' @import assertthat
 #' @import randomForest
 

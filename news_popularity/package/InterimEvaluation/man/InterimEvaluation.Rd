@@ -14,7 +14,7 @@ InterimEvaluation(dataTrain, dataTest, saveCSV = FALSE)
 \item{saveCSV}{Set to FALSE by default; otherwise saves the predictions as csv file.}
 }
 \value{
-A list with submit dataframe containing predictions for the test data.
+Dataframe called submit containing predictions for the test data.
 }
 \description{
 Implement random forest classifier with 400 trees for Predicting online news popularity Kaggle competition.
