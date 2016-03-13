@@ -1,0 +1,3 @@
+KNNs seemed to improve the score for the plain random forest.
+In .R file there is the code for creating KNN predictions.
+In two .csv's there are ready predictions for you not to spend the time on running the code.
