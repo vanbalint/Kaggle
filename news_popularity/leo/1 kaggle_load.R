@@ -12,6 +12,7 @@ if (!require("lattice")) install.packages("lattice"); library(lattice)
 if (!require("randomForest")) install.packages("randomForest"); library(randomForest)
 if (!require("FactoMineR")) install.packages("FactoMineR"); library(FactoMineR)
 if (!require("tidyr")) install.packages("tidyr"); library(tidyr)
+if (!require("rvest")) install.packages("rvest"); library(rvest)
 
 
 #load scripts
