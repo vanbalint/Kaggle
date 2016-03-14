@@ -1,28 +1,33 @@
-source("3 kaggle_feature_engineering.R")
-source("3.5 kaggle_feature_engineering.R")
+source("1 kaggle_load.R")
+
+###############
+#normalize
+omit<-c("id", "url", "popularity")
+df2.norm<-as.data.frame(lapply(df2[,setdiff(names(df2), omit)], normalize))
+df2.norm<-cbind(df2.norm, df2[,omit])
+
+#url length
+df2.norm$url<-as.character(df2.norm$url)
+df2.norm$urlLength<-nchar(df2.norm$url[1])
 
 
+#dates
+df2.norm$time = substr(df2.norm$url,21,30); df2.norm$url<-NULL; df2.norm$id<-NULL
+df2.norm$time <-ymd(df2.norm$time)
+df2.norm$year <- factor(year(df2.norm$time))
+df2.norm$month <-factor(month(df2.norm$time, label=TRUE, abbr=TRUE), ordered=FALSE)
 
-######################
-#Exploratory Analysis
-######################
+###convert data object to numeric
+df2.norm$time <-as.numeric(df2.norm$time)
 
+###dummify time
+dfDummy.norm <- dummyVars("~.",data=df2.norm, fullRank=F)
+df2.norm <- as.data.frame(predict(dfDummy.norm,df2.norm))
+print(names(df2.norm))
 
-
-
-#################### correlation #######################
-#check for autocorrelation to check whether removing redundant variables is needed or clustering opps
-####### conclusion: removal is not needed
-
-cor_df <- cor(df[,-c(1,2)])
-
-corrplot(cor_df, 
-         method="square", 
-         order = "hclust", 
-         tl.cex=0.5, tl.col="black", tl.srt=45, 
-         main="Correlation Plot")
-
-#################### plots #######################
+###################
+# strip plot function of classes
+#####################
 
 
 png("#images/strip_is_weekend/stripplot_%03d.png")
@@ -42,7 +47,9 @@ dev.off()
 
 
 
-#################### pca #######################
+#################### 
+#pca 
+#######################
 gbm<-read.csv("#data frames/VarImpTable_GBM.csv")
 rf<-read.csv("#data frames/VarImpTable_rf.csv")
 
@@ -83,54 +90,18 @@ plot(pca, habillage=ncol(df3), invisible="ind")
 dev.off()
 
 
+##################3
+#check distribution to check whether log transformation is necessary
+##################
+df4<-read.csv("df4.csv")
 
-#interpretation
-#popularity values are significant
-#positive vs. negative coordinates
+df4.rm.factor<-df4[,-c(1,2,62,63,65)]
+feat<-names(df4.rm.factor)
 
-#PC1:related with low vs. quantity of words, entertainment vs world, LDA 3&1 vs LDA 2 (respectively correlated)
-#PC2:related with LDA 4 vs. LDA2, tech vs. entertainment
-#PC3:related with socmed vs entertainment, LDA 00, LDA 01
-
-#popularity 4,5,3 have positive coordinates on PC1, while 1,2 have negative coordinates. Out of this, the contribution of 4,5,3 is highest
-#popularity 2,3 have positive coordinates on PC2, while 1,4,5 have negative coordinates. Out of this, the contribution of 2,1 is highest
-#popularity 2,3,4,5 have positive coordinates on PC3, while 1 has negative coordinates. Out of this, the contribution of 3,5,1 is highest
-
-#cumulative variance (14, 26, 36) respectively
-
-#interpretation
-#supplementary categories: Dist=distance from center of gravity, V.test=significant if greater than abs(2)
-
-#arg: file="asdf.txt" writes file
-#arg: habillage=number of column or "variable name" (the supplementary categorial variable)
-#arg: invisible=vector of strings name of variables to omit from plot
-#arg: select= from results, "cos2 0.7" greater than 0.7 in cos2 metric
-#arg: unselected= from 0 to 1 to change transparency of unselected items (to be used with select argument)
-
-df9<- data.frame(re= sample(c("white","afam","carib"),20,replace=TRUE), usborn= sample(c("yes","no"),20,replace=TRUE),stringsAsFactors=FALSE) 
-
-df8<-within(df9,{native3<- 1*(re=="carib" & usborn=="no"); native2<- 1*(re=="carib" & usborn=="yes"); native1<- 1*(re=="afam" & usborn=="yes"); native0<- 1*(re=="white" & usborn=="yes")}) 
-
-library(reshape2) 
-df10<- melt(df8,id.vars=c("re","usborn")) 
-df10New<-df10[df10$value==1,-4] 
-df10New$variable<-as.numeric(gsub("[[:alpha:]]","",df10New$variable)) 
-colnames(df10New)[3]<- "native" 
-row.names(df10New)<- 1:nrow(df10New) 
-
-df3<-melt(df1)
-?
-
-str(df2.norm_train)
-
-
-
-df4<-df3
-
-factorize_category<-c("data_channel_is_entertainment", 
-               "data_channel_is_socmed",
-               "data_channel_is_tech",
-               "data_channel_is_world")  
-nonfactorize<-setdiff(names(df4), factorize_category)
-
-df4<-melt(df4, id.vars=nonfactorize, measure.vars=factorize_category)
+png("#images/density2/density_%03d.png")
+for(i in 1:length(df4.rm.factor)) {
+  
+  myPlot<-densityplot(df4.rm.factor[,i], xlab=paste("Density for", feat[i], sep=" "), main=paste("Density for", feat[i], sep=" "))
+  print(myPlot)
+}
+dev.off
