@@ -34,10 +34,21 @@ In the current competition setup, the cost of Type I/II errors for any class is 
 Related to the class imbalance, we observe that many features presented significant positive skewness.
 
 #FEATURE ENGINEERING
-...........
+To improve algorithmic performance, we applied logarithmic transformations, $log(1+x)$ to the abovementioned skewed features. Additionally, date-related information extracted from the article's URL was discretized.  
+
+According to literature, category of the news, language subjectivity, news source, and frequency and relevance of key words (named entities), have been shown to be good predictors for online news popularity (Bandari et al, 2012). Among these four characteristics, all but the news source and relevance of keyword is provided in the original data set. In our context, we defined news source as the author of each article, which was acquired via web scraping. Out of the entire training and test set, we obtained 340 unique authors and 6200 NULL values, suggesting a high ratio of article to unique authors ratio. We ran standard GBM to identify the most important authors, of which only 37 proved to have predicting power. As a proxy for keyword relevance, we attempted to compute a relevance score using data obtained one week prior to each article's publishing date from Google Trend API, but quota limits were too restrictive to complete the queries.
+
+Nevertheless, the addition of these new features did not help improve our standard RF benchmark.
+
+Posteriorly, we added predictions made by K-NN, as new features for RF, and a slight improvement was observed.
+
 
 #PREDICTION MODELS AND RESULTS
 ............
 
+
 #CONCLUSION
 ..............
+
+#BIBLIOGRAPHY
+Bandari, R., Asur, S., Huberman, B.A.: The pulse of news in social media: Forecasting popularity. CoRR (2012)
