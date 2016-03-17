@@ -42,10 +42,16 @@ Nevertheless, the addition of these new features did not help improve our standa
 
 Posteriorly, we added predictions made by K-NN, as new features for RF, and a slight improvement was observed.
 
+##Interaction features
+We improved our model with the inclusion of the  interaction feature timedelta * num_hrefs. We discovered this feature by looking at plots like the following, looking for variables where ellipses are positioned differently and on a diagonal line
 
 #PREDICTION MODELS AND RESULTS
-............
 
+##Outlier detection
+One variable (id = 22686) has unreasonable values for the variables n_non_stop_words, n_unique_tokens and n_non_stop_unique_tokens. For all other observations the values are between 0 and 1, while for this observation they are over 500 for each of the three. We removed this observation from the training set. We recognized this problem while looking at boxplots of the variables.
+
+##Parameter optimization
+![what is best mtry?](/media/balint/Storage/Tanulas/Kaggle/news_popularity/mtries_plot.pdf)
 
 #CONCLUSION
 ..............
