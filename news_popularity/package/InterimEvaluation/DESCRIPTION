@@ -1,0 +1,9 @@
+Package: InterimEvaluation
+Title: Random Forest for News Popularity
+Version: 0.0.0.9000
+Author: Team ThreeNN
+Description: Implement random forest classifier with 400 trees for Predicting online news popularity Kaggle competition.
+Depends: R (>= 3.2.3), assertthat, randomForest
+License: see LICENCE
+LazyData: true
+RoxygenNote: 5.0.1

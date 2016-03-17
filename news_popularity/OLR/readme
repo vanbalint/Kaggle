@@ -1,0 +1,3 @@
+Here ordered logistic regression is fitted. The multicollinearity problem disappears only if the top ten Fisher information variables (from the report by Ren&Yang) are used as predictors.
+The .R file shows the creation of .csv's. When testing within training data, OLR with the specified variables performs worse than the random forest.
+The .csv files represent fitted probabilities for the classes. One way to use this data is to pick the predicted class instead of the whole array of the probabilities.

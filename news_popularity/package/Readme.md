@@ -1,0 +1,1 @@
+The following package replicates the submission as of Mon, 15 Feb 2016 00:03:51 with Public Score result 0.52329. It features application of plain random forest classifier from the package (randomForest) with the seed set to 0 and the number of decision trees set to 400.
