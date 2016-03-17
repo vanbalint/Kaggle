@@ -123,7 +123,7 @@ library(knitr)
 kable(t)
 ```
 
-The best private score was achieved by a model which used the clustered words. But as it was faring worse on the public leaderboard and in our internal tests as well (did not test it many times due to long running time), we did not decide to work on it more. Our final submission was a slightly enhanced version of the initial RF, but in the private leaderboard it did a little bit worse than the initial submission. In any case, our "advanced" models did not work much better than our initial benchmark, the seed influenced our accuracy more than the decision among our best models.
+The best private score was achieved by a model which used the clustered words. But as it was faring worse on the public leaderboard and in our internal tests as well (did not test it many times due to long running time), we did not decide to work on it more. Our final submission was a slightly enhanced version of the initial RF, but in the private leaderboard it did a little bit worse than the initial submission.
 
 #BIBLIOGRAPHY
 Bandari, R., Asur, S., Huberman, B.A.: The pulse of news in social media: Forecasting popularity. CoRR (2012)
