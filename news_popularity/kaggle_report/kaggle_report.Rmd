@@ -4,7 +4,7 @@ author: "Team 3-NN: Kseniya Bout, Balint Van, Leonardo Byon"
 output: pdf_document
 ---
 #ABSTRACT
-Our final model is a random forest, using the randomForest package. We excluded an outlier observation from the training set and added an interaction term for variables timedelta and num_hrefs. We optimized the following parameters of the function: the number of trees and the number of variables randomly sampled as candidates at each split. We settled for ntree = 400 and mtry = 21.
+Although we tried many things, we could not improve significantly our benchmark randomforest prediction.
 
 #INTRODUCTION
 We were provided a dataset of online news articles published by Mashable.com with the goal of developing a multi-class classifiers for predicting the level of popularity for each article. The dataset is composed by 60 features and consists of 39,000 articles, of which 30,000 are labeled training data, with the remainder serving as a test set. The popularity is a function of the number of times the article has been shared, where total number of classes is five, where (1) are those that were shared a few times, while (5) being those that went viral. The evaluation critiera is  Classification Accuracy. 
@@ -20,7 +20,7 @@ To get an initial understanding of the data we looked at boxplots of the variabl
 PCA helped us gain better understanding on the relevance of features, where those closely associated with popularity were average number of key words and news category/topic. For example, there is positive correlation between popularity and the number of average key words and LDA_03 (undiscosed topic). Additionally, low popularity is related with World and Enterntainment news, while mid levels of popularity are associated with Technology-related news. 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-setwd("~/GitHub/Kaggle/news_popularity/kaggle_report")
+#setwd("~/Kaggle/news_popularity/kaggle_report")
 if (!require("FactoMineR")) install.packages("FactoMineR"); library(FactoMineR)
 
 gbm<-read.csv("VarImpTable_GBM.csv")
@@ -103,9 +103,9 @@ We used random forests as our prediction models, because Ren and Yang wrote that
 
 We tested different number of trees and we decided on ntree = 400, based on the following plot.
 
-[plot needed]
+![what is best ntree?](oob_error.png)
 
-Number of variables randomly sampled as candidates at each split (mtry) does not have a clear effect on accuracy, as the variance is big. But to us there seemed to a slight upward trend, so we chose a value (21) much bigger than the default (8).
+Number of variables randomly sampled as candidates at each split (mtry) does not have a clear effect on accuracy, as the variance is big. But to us there seemed to be a slight upward trend, so we chose a value (21) much bigger than the default (8).
 
 ![what is best mtry?](mtries_plot.jpg)
 
@@ -113,8 +113,17 @@ Number of variables randomly sampled as candidates at each split (mtry) does not
 
 Here we describe the different submissions and their accuracy. We did not make a submission for all the methods we described above, as many times we could see without a submission that it would not be an improvement.
 
-February 7th Basic random forest model with 400 trees.
+```{r kable, echo=FALSE}
+Dates <- c("07 Feb", "09 Feb", "11 Feb", "12 Feb", "14 Feb", "15 Feb", "07 Mar", "12 Mar", "14 Mar")
+Description <- c("Basic random forest model with 400 trees.", "RF with wordcounts from the url.", "RF with balanced training set.", "Gradient boosting machine with dummified time variable.", "RF with wordcluster features from url.", "Reproducible version of the basic model.", "RF with variable selection and the author variable", "RF with knn predictions as additional feature.", "Fine tuned RF with an additional interaction term.")
+Public_score <- c(0.53571, 0.50466, 0.53106, 0.52950, 0.52950, 0.52329, 0.38199, 0.52640, 0.54503)
+Private_score <- c(0.52456, 0.51222, 0.51856, 0.52156, 0.52622, 0.51456, 0.35178, 0.52100, 0.52411)
+t <- data.frame(Dates, Description, Public_score, Private_score)
+library(knitr)
+kable(t)
+```
 
+The best private score was achieved by a model which used the clustered words. But as it was faring worse on the public leaderboard and in our internal tests as well (did not test it many times due to long running time), we did not decide to work on it more. Our final submission was a slightly enhanced version of the initial RF, but in the private leaderboard it did a little bit worse than the initial submission. In any case, our "advanced" models did not work much better than our initial benchmark, the seed influenced our accuracy more than the decision among our best models.
 
 #BIBLIOGRAPHY
 Bandari, R., Asur, S., Huberman, B.A.: The pulse of news in social media: Forecasting popularity. CoRR (2012)
