@@ -9,6 +9,7 @@
 #' @param dataTest Test dataset: a data frame or a matrix with new observations and the same set of features as in the training set apart from the output.
 #' @param saveCSV Set to FALSE by default; otherwise saves the predictions as csv file.
 #' @return Dataframe called submit containing predictions for the test data.
+#' @export
 #' @import assertthat
 #' @import randomForest
 
@@ -22,19 +23,26 @@ InterimEvaluation <- function(dataTrain, dataTest, saveCSV = FALSE) {
 
   # rearrange the data to fit the function
   library(randomForest)
-  y <- dataTrain[, ncol(dataTrain)]
+  y <- dataTrain$popularity
   y <- as.factor(y)
-  X <- dataTrain[, -c(1, 2, 3, ncol(dataTrain))]
+  X <- dataTrain
+  X <- X[-which(X$n_non_stop_words>2),]
+  X$newfeat <- X$timedelta * X$num_hrefs
+  X <- dataTrain[, -(1:2)]
   Df <- as.data.frame(cbind(y, X))
-  newX <- dataTest[, -c(1, 2, 3)]
+  newX <- dataTest
+  newX$newfeat <- nedataTest$timedelta * dataTest$num_hrefs
   newid <- dataTest[, 1]
   # ensure reproducibility with the seed
-  set.seed(0)
-  randomforest_0rF400 <- randomForest(y ~ ., data = Df, ntree = 400)
-  popularity_prediction_0rF400 <- predict(object = randomforest_0rF400, newdata = newX)
-  submit <- data.frame(id = newid, popularity = as.numeric(popularity_prediction_0rF400))
+
+  set.seed(112)
+  randomforest1 <- randomForest(popularity ~ .,
+                                data=Df,
+                                ntree=400, mtry = 21)
+  popularity_prediction1 <- predict(object = randomforest1, newdata = newX)
+  submit <- data.frame(id = newid, popularity = as.numeric(popularity_prediction1))
   # write the csv file if specified
-  if (saveCSV) {write.csv(submit, file = "popularity_prediction_0rF400.csv", row.names = FALSE)}
+  if (saveCSV) {write.csv(submit, file = "popularity_prediction1.csv", row.names = FALSE)}
   # output the dataframe with predictions
   return(submit = submit)
 }
