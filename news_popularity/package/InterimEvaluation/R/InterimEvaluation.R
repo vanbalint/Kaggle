@@ -23,20 +23,20 @@ InterimEvaluation <- function(dataTrain, dataTest, saveCSV = FALSE) {
 
   # rearrange the data to fit the function
   library(randomForest)
+  dataTrain <- dataTrain[-which(dataTrain$n_non_stop_words>2),]
   y <- dataTrain$popularity
   y <- as.factor(y)
-  X <- dataTrain
-  X <- X[-which(X$n_non_stop_words>2),]
+  X <- dataTrain[, -ncol(dataTrain)]
   X$newfeat <- X$timedelta * X$num_hrefs
   X <- dataTrain[, -(1:2)]
   Df <- as.data.frame(cbind(y, X))
   newX <- dataTest
   newX$newfeat <- dataTest$timedelta * dataTest$num_hrefs
+  newX <- newX[,-(1:2)]
   newid <- dataTest[, 1]
   # ensure reproducibility with the seed
-
   set.seed(112)
-  randomforest1 <- randomForest(popularity ~ .,
+  randomforest1 <- randomForest(y ~ .,
                                 data=Df,
                                 ntree=400, mtry = 21)
   popularity_prediction1 <- predict(object = randomforest1, newdata = newX)
