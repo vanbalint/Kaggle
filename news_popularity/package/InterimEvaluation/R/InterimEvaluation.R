@@ -28,7 +28,7 @@ InterimEvaluation <- function(dataTrain, dataTest, saveCSV = FALSE) {
   y <- as.factor(y)
   X <- dataTrain[, -ncol(dataTrain)]
   X$newfeat <- X$timedelta * X$num_hrefs
-  X <- dataTrain[, -(1:2)]
+  X <- X[, -(1:2)]
   Df <- as.data.frame(cbind(y, X))
   newX <- dataTest
   newX$newfeat <- dataTest$timedelta * dataTest$num_hrefs
