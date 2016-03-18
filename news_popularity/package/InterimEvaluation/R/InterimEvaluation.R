@@ -31,7 +31,7 @@ InterimEvaluation <- function(dataTrain, dataTest, saveCSV = FALSE) {
   X <- dataTrain[, -(1:2)]
   Df <- as.data.frame(cbind(y, X))
   newX <- dataTest
-  newX$newfeat <- nedataTest$timedelta * dataTest$num_hrefs
+  newX$newfeat <- dataTest$timedelta * dataTest$num_hrefs
   newid <- dataTest[, 1]
   # ensure reproducibility with the seed
 
